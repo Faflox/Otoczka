@@ -15,7 +15,7 @@ class TestGrahamAlgorithm(unittest.TestCase):
         self.assertEqual(graham([(0, 0), (1, 1)]), [(0, 0), (1, 1)])
 
     def test_punkty_na_jednej_prostej(self):
-        self.assertEqual(graham([(0, 0), (1, 1), (2, 2)]), [(0, 0), (1, 1), (2, 2)])
+        self.assertEqual(graham([(0, 0), (1, 1), (2, 2)]), [(0, 0), (2, 2)])
 
     def test_punkty_zidentycznymi_wspolrzednymi(self):
         self.assertEqual(graham([(1, 1), (1, 1), (1, 1)]), [(1, 1)])

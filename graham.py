@@ -8,7 +8,9 @@ def graham(punkty: List[Tuple[float, float]], opis:bool=1, wykres:bool=1) -> Lis
     """
     Funkcja tworzy otoczkę wypukłą na płaszczyźnie na podstawie przekazanych do niej punktów.
     Args:
-        punkty (list): punkty muszą zostać opisane przez krotki ze współrzędnymi x i y
+        punkty (list): punkty muszą zostać opisane przez krotki ze współrzędnymi x i y,
+        opis (bool): True jeśli chcesz opis,
+        wykres (bool): True jeśli chcesz wykres
 
     Returns:
         list: Zwraca listę punktów tworzącą otoczkę na liście początkowych punktów
@@ -55,10 +57,10 @@ def stworz_otoczke(punkty: List) -> List:
             # Jeśli wynik jest ujemny, oznacza to prawy skręt, więc usuń p2.
             wektor1 = (p2[0] - p1[0]) * (punkt[1] - p2[1])
             wektor2 = (p2[1] - p1[1]) * (punkt[0] - p2[0])
-            iloczyn_wektorowy = wektor1 - wektor2
-            if iloczyn_wektorowy >= 0:
+            if wektor1 - wektor2 <= 0:
+                otoczka.pop()
+            else:
                 break
-            otoczka.pop()
         otoczka.append(punkt)
     return otoczka
 
@@ -85,7 +87,17 @@ def opisz_wynik(otoczka: List) -> str:
     elif len(otoczka) == 2:
         odpowiedź += 'Odcinek\n'
     else:
-        odpowiedź += f'{len(otoczka)}-kąt\n'
+        def na_jednej_prostej(punkty: List) -> bool:
+            (x0, y0), (x1, y1) = punkty[0], punkty[1]
+            for (x, y) in punkty[2:]:
+                if (y1 - y0) * (x - x0) != (y - y0) * (x1 - x0):
+                    return False
+            return True
+
+        if na_jednej_prostej(otoczka):
+            odpowiedź += 'Prosta\n'
+        else:
+            odpowiedź += f'{len(otoczka)}-kąt\n'
     odpowiedź += 'o współrzędnych: ' + ', '.join(f'{punkt}' for punkt in otoczka)
     return odpowiedź
 
@@ -118,5 +130,3 @@ def narysuj(punkty: List, otoczka: List):
     
     plt.savefig(sciezka)
     plt.close()
-
-
